@@ -1,0 +1,23 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> SignInManager
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@if(SignInManager.IsSignedIn(User))
+{
+    Response.Redirect("/Dashboard");
+}
+else
+{
+    <h1>
+        Please 
+        <a asp-area="Identity" asp-page="/Account/Login">sign in</a> 
+        or 
+        <a asp-area="Identity" asp-page="/Account/Register">create an account</a> 
+        to use the ChatWatch panel
+    </h1>
+}
+

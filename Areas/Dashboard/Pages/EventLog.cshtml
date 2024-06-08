@@ -14,31 +14,33 @@
             <th>Date/Time</th>
             <th>Name</th>
             <th>Server of Origin</th>
+    using ChatWatchApp.Models;
             <th>Message</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Messages) {
-        <tr>
+@foreach (var item in Model.Entries) {
+        <tr class="@(
+            item.Type == EventLogEntry.EntryType.PrivateMessage ?
+                "border border-5 border-warning" :
+                "border"
+        )">
             <td>
-                @Html.DisplayFor(modelItem => item.Timestamp)
+                @Html.DisplayFor(modelItem => item.Data.Timestamp)
             </td>
             <td>
-                @if(item.Sender != null) {
-                    @if(string.IsNullOrWhiteSpace(item.Sender.CustomName)) {
-                        @Html.DisplayFor(i => item.Sender.Username);
-                    } else {
-                        <span>@Html.DisplayFor(i => item.Sender.CustomName) &lpar;@Html.DisplayFor(i => item.Sender.Username)&rpar;</span>
-                    }
-                } else {
-                    <span>Null!</span>
+                @Model.FormatName(item.Data.Sender)
+                @if(item.Type == EventLogEntry.EntryType.PrivateMessage) {
+                    <span>&rarrw;</span>
+                    var pm = (ChatWatchApp.Models.PrivateMessage)item.Data;
+                    @Model.FormatName(pm.Recipient);
                 }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Server)
+                @Html.DisplayFor(modelItem => item.Data.Server)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Content)
+                @Html.DisplayFor(modelItem => item.Data.Content)
             </td>
         </tr>
 }

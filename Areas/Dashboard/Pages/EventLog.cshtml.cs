@@ -21,11 +21,44 @@ public class DashLogModel : PageModel
         _context = context;
     }
 
-    public IList<ChatMessage> Messages { get;set; } = default!;
+    public List<EventLogEntry> Entries { get; set; } = new();
 
     public async Task OnGetAsync()
     {
-        Messages = await _context.ChatMessage.Include(m => m.Sender).ToListAsync();
-        Messages = Messages.OrderByDescending(m => m.Timestamp).Take(25).ToList();
+        var chatMessages = await _context.ChatMessage.Include(m => m.Sender).ToListAsync();
+        Entries.AddRange(chatMessages.Select(m => new EventLogEntry(m)));
+
+        var privateMessages = await _context.PrivateMessage.Include(m => m.Sender).Include(m => m.Recipient).ToListAsync();
+        Entries.AddRange(privateMessages.Select(m => new EventLogEntry(m)));
+
+        Entries = Entries.OrderByDescending(e => e.Data.Timestamp).Take(150).ToList();
     }
+
+    public string FormatName(Player p) {
+        if(string.IsNullOrWhiteSpace(p.CustomName)) {
+            return p.Username;
+        }
+        return $"{p.CustomName} ({p.Username})";
+    }
+}
+
+public class EventLogEntry
+{
+    public enum EntryType {
+        ChatMessage,
+        PrivateMessage
+    }
+
+    public EventLogEntry(ChatMessage m) {
+        Type = EntryType.ChatMessage;
+        Data = m;
+    }
+
+    public EventLogEntry(PrivateMessage m) {
+        Type = EntryType.PrivateMessage;
+        Data = m;
+    }
+
+    public EntryType Type { get; set; }
+    public IMessage Data { get; set; }
 }

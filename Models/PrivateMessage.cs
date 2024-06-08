@@ -1,6 +1,6 @@
 namespace ChatWatchApp.Models;
 
-public class PrivateMessage 
+public class PrivateMessage : IMessage
 {
     public Guid ID { get; set; } = Guid.NewGuid();
     public DateTime Timestamp { get; set; } = DateTime.Now;

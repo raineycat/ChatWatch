@@ -1,8 +1,46 @@
 @page
-@using ChatWatchApp.Pages
+@using ChatWatchApp.Pages;
 @model DashLogModel
+
 @{
-    ViewData["Title"] = "Event Logs";
+    ViewData["Title"] = "Event Log";
 }
 
-<h1>Events</h1>
+<h1>Message log</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date/Time</th>
+            <th>Name</th>
+            <th>Server of Origin</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Messages) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Timestamp)
+            </td>
+            <td>
+                @if(item.Sender != null) {
+                    @if(string.IsNullOrWhiteSpace(item.Sender.CustomName)) {
+                        @Html.DisplayFor(i => item.Sender.Username);
+                    } else {
+                        <span>@Html.DisplayFor(i => item.Sender.CustomName) &lpar;@Html.DisplayFor(i => item.Sender.Username)&rpar;</span>
+                    }
+                } else {
+                    <span>Null!</span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Server)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -19,6 +19,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <div class="vr m-2"></div>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -30,8 +31,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Dashboard" asp-page="/Analysis">Insights</a>
                         </li>
+                        <div class="vr m-2"></div>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-page="/Index">Manage</a>
+                            <a class="nav-link text-dark" asp-area="Admin" asp-page="/Index">Panel management</a>
+                        </li>
+                        <div class="vr m-2"></div>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Create a user</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -47,7 +53,11 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - ChatWatchApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            ChatWatch
+            &nbsp;
+            <div class="vr"></div>
+            &nbsp;
+            made with &hearts; and ASP.NET by <a href="https://github.com/sbcomputertech" target="_blank" rel="noreferrer">reddust9</a>
         </div>
     </footer>
 

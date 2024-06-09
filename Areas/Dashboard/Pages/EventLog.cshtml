@@ -21,7 +21,7 @@
 @foreach (var item in Model.Entries) {
         <tr class="@(
             item.Type == EventLogEntry.EntryType.PrivateMessage ?
-                "bg-warning bg-gradient" :
+                "bg-warning bg-gradient " :
                 ""
         )">
             <td>

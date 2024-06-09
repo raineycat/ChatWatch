@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using ChatWatchApp.Data;
 using ChatWatchApp.Services;
 using ChatWatchApp.Services.Impl;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using ChatWatchApp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddSingleton<IUsernameService, MojangUsernameService>();
@@ -36,12 +41,18 @@ else
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
+
+using(var scope = app.Services.CreateScope())
+{
+    StartupHelper.SetupAppDbAsync(scope, app.Logger).Wait();
+}
 
 app.MapRazorPages();
 app.MapControllers();

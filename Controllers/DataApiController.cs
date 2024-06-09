@@ -52,13 +52,13 @@ public class DataApiController : ControllerBase
         foreach(var player in _dbc.Player)
         {
             var numChats = await _dbc.ChatMessage
-                .Where(m => m.Sender == player)
                 .Where(m => m.Timestamp.Year == today.Year && m.Timestamp.Month == today.Month)
+                .Where(m => m.Sender == player)
                 .CountAsync();
 
             var numPrivs = await _dbc.PrivateMessage
-                .Where(m => m.Sender == player)
                 .Where(m => m.Timestamp.Year == today.Year && m.Timestamp.Month == today.Month)
+                .Where(m => m.Sender == player)
                 .CountAsync();
 
             dict.Add(_username.GetUsername(player), new MessageCountData(numChats, numPrivs));

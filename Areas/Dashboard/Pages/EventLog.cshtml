@@ -12,9 +12,8 @@
     <thead>
         <tr>
             <th>Date/Time</th>
-            <th>Name</th>
+            <th>Player Name (&rarr; Recipient Name)</th>
             <th>Server of Origin</th>
-    using ChatWatchApp.Models;
             <th>Message</th>
         </tr>
     </thead>
@@ -31,7 +30,7 @@
             <td>
                 @Model.FormatName(item.Data.Sender)
                 @if(item.Type == EventLogEntry.EntryType.PrivateMessage) {
-                    <span>&rarrw;</span>
+                    <span>&rarr;</span>
                     var pm = (ChatWatchApp.Models.PrivateMessage)item.Data;
                     @Model.FormatName(pm.Recipient);
                 }

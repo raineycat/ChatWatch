@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ChatWatchApp.Data;
+using ChatWatchApp.Services;
+using ChatWatchApp.Services.Impl;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireNonAlphanumeric = false;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddSingleton<IUsernameService, MojangUsernameService>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();

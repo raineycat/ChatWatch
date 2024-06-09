@@ -8,17 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using ChatWatchApp.Data;
 using ChatWatchApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using ChatWatchApp.Services;
 
 namespace ChatWatchApp.Pages;
 
 [Authorize]
 public class DashLogModel : PageModel
 {
-    private readonly ChatWatchApp.Data.ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
+    private readonly IUsernameService _username;
 
-    public DashLogModel(ChatWatchApp.Data.ApplicationDbContext context)
+    public DashLogModel(ApplicationDbContext context, IUsernameService username)
     {
         _context = context;
+        _username = username;
     }
 
     public List<EventLogEntry> Entries { get; set; } = new();
@@ -36,9 +39,9 @@ public class DashLogModel : PageModel
 
     public string FormatName(Player p) {
         if(string.IsNullOrWhiteSpace(p.CustomName)) {
-            return p.Username;
+            return _username.GetUsername(p);
         }
-        return $"{p.CustomName} ({p.Username})";
+        return $"{p.CustomName} ({_username.GetUsername(p)})";
     }
 }
 

@@ -68,8 +68,6 @@ $.getJSON("/DataApi/WeeklyMessageCount", wmcData => {
 })
 
 $.getJSON("/DataApi/MostActivePlayers", mapData => {
-    console.log(mapData)
-
     new Chart(
         $("#chartMostActivePlayers")[0].getContext("2d"),
         {
@@ -78,20 +76,20 @@ $.getJSON("/DataApi/MostActivePlayers", mapData => {
                 labels: Object.keys(mapData),
                 datasets: [
                     {
-                        label: "Combined",
+                        label: "Total messages",
                         data: Object.values(mapData).map(v => v.numChatMessages + v.numPrivateMessages),
                         hoverOffset: 5
-                    },
-                    {
-                        label: "Chat",
-                        data: Object.values(mapData).map(v => v.numChatMessages),
-                        hoverOffset: 5
-                    },
-                    {
-                        label: "Private",
-                        data: Object.values(mapData).map(v => v.numPrivateMessages),
-                        hoverOffset: 5
-                    },
+                    }
+                    // {
+                    //     label: "Chat",
+                    //     data: Object.values(mapData).map(v => v.numChatMessages),
+                    //     hoverOffset: 5
+                    // },
+                    // {
+                    //     label: "Private",
+                    //     data: Object.values(mapData).map(v => v.numPrivateMessages),
+                    //     hoverOffset: 5
+                    // }
                 ]
             },
             options: {

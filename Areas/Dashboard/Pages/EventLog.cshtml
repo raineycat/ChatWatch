@@ -21,8 +21,8 @@
 @foreach (var item in Model.Entries) {
         <tr class="@(
             item.Type == EventLogEntry.EntryType.PrivateMessage ?
-                "border border-5 border-warning" :
-                "border"
+                "bg-warning bg-gradient" :
+                ""
         )">
             <td>
                 @Html.DisplayFor(modelItem => item.Data.Timestamp)

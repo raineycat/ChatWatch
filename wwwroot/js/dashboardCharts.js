@@ -1,5 +1,3 @@
-const DaysOfWeek = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" ]
-
 $.getJSON("/DataApi/DailyMessageCount", dmcData => {
     new Chart(
         $("#chartMessageTypesToday")[0].getContext("2d"),
@@ -35,7 +33,12 @@ $.getJSON("/DataApi/WeeklyMessageCount", wmcData => {
         {
             type: "line",
             data: {
-                labels: wmcData.map((_, i) => DaysOfWeek[i]),
+                labels: [6, 5, 4, 3, 2, 1, 0].map(i => {
+                    let date = new Date()
+                    var dateOffset = (24*60*60*1000) * i
+                    date.setTime(date.getTime() - dateOffset)
+                    return date.toLocaleDateString("en-gb", { weekday: "short", day: "numeric", month: "short" })
+                }),
                 datasets: [
                     {
                         label: "Combined",

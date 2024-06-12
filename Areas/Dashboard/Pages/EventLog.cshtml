@@ -8,7 +8,7 @@
 
 <h1>Message log</h1>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Date/Time</th>
@@ -28,11 +28,11 @@
                 @Html.DisplayFor(modelItem => item.Data.Timestamp)
             </td>
             <td>
-                @Model.FormatName(item.Data.Sender)
+                <a asp-area="Admin" asp-page="ManagePlayer" asp-route-id="@item.Data.Sender.ID">@Model.FormatName(item.Data.Sender)</a>
                 @if(item.Type == EventLogEntry.EntryType.PrivateMessage) {
                     <span>&rarr;</span>
                     var pm = (ChatWatchApp.Models.PrivateMessage)item.Data;
-                    @Model.FormatName(pm.Recipient);
+                    <a asp-area="Admin" asp-page="ManagePlayer" asp-route-id="@pm.Recipient.ID">@Model.FormatName(pm.Recipient)</a>;
                 }
             </td>
             <td>

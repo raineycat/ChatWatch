@@ -1,0 +1,29 @@
+@page
+@using ChatWatchApp.Pages;
+@model PlayerListModel
+
+@{
+    ViewData["Title"] = "Player list";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr class="m-3">
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>UUID</th>
+            <th>Message count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var player in Model.Players) {
+            <tr>
+                <td><a asp-area="Admin" asp-page="ManagePlayer" asp-route-id="@player.ID">@Model.FormatName(player)</a></td>
+                <td><code>@player.ID</code></td>
+                <td>~</td>
+            </tr>
+        }
+    </tbody>
+</table>

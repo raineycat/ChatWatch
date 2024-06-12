@@ -1,0 +1,17 @@
+@page
+@using ChatWatchApp.Pages;
+@model ManagePlayerModel;
+@{
+    ViewData["Title"] = "Manage " + @Model.GetUsername();
+}
+
+<h1>Manage player '@Model.GetUsername()'</h1>
+<hr class="m-3">
+
+<form id="edit-player-form" method="post">
+    <div class="row">
+        <label asp-for="PlayerCustomName" class="col-sm-2 col-form-label m-2 text-end">Custom Name</label>
+        <input asp-for="PlayerCustomName" class="col-sm col-form-control m-2" placeholder="Set a custom name for this player" />
+        <button id="update-profile-button" type="submit" class="col-sm-2 col-form-control m-2 btn btn-primary">Save</button>
+    </div>
+</form>

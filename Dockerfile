@@ -10,3 +10,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app ./
 ENTRYPOINT ["dotnet", "ChatWatchApp.dll"]
+
+LABEL org.opencontainers.image.source = "https://github.com/sbcomputertech/ChatWatch" 
+LABEL org.opencontainers.image.description = "Minecraft chat monitoring server"

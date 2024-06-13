@@ -24,6 +24,7 @@ public class PlayerListModel : PageModel
     {
         _context = context;
         _username = username;
+        Players = [];
     }
 
     public async Task OnGetAsync()

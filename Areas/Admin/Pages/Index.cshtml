@@ -2,7 +2,19 @@
 @using ChatWatchApp.Pages;
 @model AdminIndexModel;
 @{
-    ViewData["Title"] = "Server Management";
+    ViewData["Title"] = "Server Configuration";
 }
 
-<h1>Settings here soon</h1>
+<h1>@ViewData["Title"]</h1>
+<hr class="m-2">
+
+<div>
+    <div class="row">
+        <label asp-for="ServerName" class="col-sm-2 col-form-label m-2 text-end">Server name</label>
+        <input asp-for="ServerName" class="col-sm col-form-control m-2" readonly />
+    </div>
+    <div class="row">
+        <label asp-for="IngestToken" class="col-sm-2 col-form-label m-2 text-end">Ingest token</label>
+        <input asp-for="IngestToken" class="col-sm col-form-control m-2" readonly />
+    </div>
+</div>

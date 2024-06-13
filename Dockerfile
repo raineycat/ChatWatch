@@ -9,6 +9,7 @@ RUN dotnet publish -c release -o /app --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app ./
+ENV ASPNETCORE_ENVIRONMENT=Production
 ENTRYPOINT ["dotnet", "ChatWatchApp.dll"]
 
 LABEL org.opencontainers.image.source = "https://github.com/sbcomputertech/ChatWatch" 

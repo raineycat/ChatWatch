@@ -23,6 +23,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddSingleton<IUsernameService, MojangUsernameService>();
+builder.Services.AddSingleton<IServerSettings, ConfigServerSettings>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
@@ -52,6 +53,7 @@ app.UseAuthorization();
 using(var scope = app.Services.CreateScope())
 {
     StartupHelper.SetupAppDbAsync(scope, app.Logger).Wait();
+    app.Logger.LogInformation("Server name: '{}'", app.Services.GetService<IServerSettings>()?.ServerName);
 }
 
 app.MapRazorPages();

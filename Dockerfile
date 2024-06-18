@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /build
 COPY . /build
 RUN dotnet restore
-RUN dotnet publish -c release -o /app --no-restore
+RUN dotnet publish -c release -o /app --no-restore --self-contained
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0

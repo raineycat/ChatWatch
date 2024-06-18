@@ -11,7 +11,7 @@ echo "ASP.NET: $(dotnet --list-runtimes | grep AspNet | awk -F ' ' '{print $2}')
 echo "!!! RUNNING COMMAND !!!"
 
 # Replace Startup Variables
-MODIFIED_STARTUP="${STARTUP} --CWServerConfig:ServerName ${ServerName} --CWServerConfig:IngestToken ${IngestToken}"
+MODIFIED_STARTUP="${STARTUP} --ConnectionStrings:DefaultConnection ${DbConnection} --CWServerConfig:ServerName ${ServerName} --CWServerConfig:IngestToken ${IngestToken}"
 echo ":/home/container$ ${MODIFIED_STARTUP}"
 
 # Run the Server

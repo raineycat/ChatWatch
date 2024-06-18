@@ -49,7 +49,7 @@ public class DataApiController : ControllerBase
         var dict = new Dictionary<string, MessageCountData>();
         var today = DateTime.Now.Date;
 
-        foreach(var player in _dbc.Player)
+        foreach(var player in await _dbc.Player.ToListAsync())
         {
             var numChats = await _dbc.ChatMessage
                 .Where(m => m.Timestamp.Year == today.Year && m.Timestamp.Month == today.Month)

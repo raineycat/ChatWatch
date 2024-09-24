@@ -42,6 +42,7 @@ public static class StartupHelper
             return;
         }
 
-        logger.LogInformation("Default login: admin/{}   <- change this as soon as you log in", pw);
+        // log this as error so that it will show up even if you turn down log verbosity
+        logger.LogError("Default login: admin/{}   <- change this as soon as you log in", pw);
     }
 }

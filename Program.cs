@@ -11,7 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-if(builder.Environment.IsDevelopment()) {
+var devMySql = builder.Configuration.GetSection("CWServerConfig").GetValue<bool>("UseMySqlInDevelopment");
+if(builder.Environment.IsDevelopment() && !devMySql) {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlite(connectionString));
 } else {

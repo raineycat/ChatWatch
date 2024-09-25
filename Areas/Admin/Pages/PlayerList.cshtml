@@ -1,5 +1,6 @@
 @page
 @using ChatWatchApp.Pages;
+@inject ChatWatchApp.Data.ApplicationDbContext _dbcontext;
 @model PlayerListModel
 
 @{
@@ -14,7 +15,7 @@
         <tr>
             <th>Name</th>
             <th>UUID</th>
-            <th>Message count</th>
+            <th>Message count (chat + private)</th>
         </tr>
     </thead>
     <tbody>
@@ -22,7 +23,10 @@
             <tr>
                 <td><a asp-area="Admin" asp-page="ManagePlayer" asp-route-id="@player.ID">@Model.FormatName(player)</a></td>
                 <td><code>@player.ID</code></td>
-                <td>~</td>
+                <td>
+                    @_dbcontext.ChatMessage.AsQueryable().Where(m => m.Sender.ID == player.ID).Count()
+                    +
+                    @_dbcontext.PrivateMessage.AsQueryable().Where(m => m.Sender.ID == player.ID).Count()
             </tr>
         }
     </tbody>

@@ -3,12 +3,14 @@ namespace ChatWatchApp.Services.Impl;
 
 public class MojangUsernameService : IUsernameService
 {
+    private ILogger<MojangUsernameService> _logger;
     private DateTime _nextClearTime;
     private Dictionary<Guid, string> _cache;
     private HttpClient _client;
 
-    public MojangUsernameService()
+    public MojangUsernameService(ILogger<MojangUsernameService> log)
     {
+        _logger = log;
         _cache = new Dictionary<Guid, string>();
         ClearCache();
 
@@ -18,8 +20,10 @@ public class MojangUsernameService : IUsernameService
 
     public void ClearCache()
     {
+        _logger.LogInformation("Clearing username cache!");
         _cache.Clear();
-        _nextClearTime = DateTime.Now.AddDays(1);
+        _nextClearTime = DateTime.Now.AddDays(7);
+        _logger.LogInformation("Next username cache clear is on {DateTime}", _nextClearTime);
     }
 
     public string GetUsername(Guid uuid)
@@ -38,6 +42,7 @@ public class MojangUsernameService : IUsernameService
         }
 
         if(_cache.TryGetValue(uuid, out var name)) return name;
+        _logger.LogInformation("Username for {UUID} missed the cache!", uuid);
         return await CacheFreshUsername(uuid);
     }
 
@@ -48,6 +53,12 @@ public class MojangUsernameService : IUsernameService
         var endpoint = $"/session/minecraft/profile/{uuid}";
         var resp = await _client.GetAsync(endpoint);
         var json = await resp.Content.ReadFromJsonAsync<MojangProfileResponse>();
+
+        if (json?.Name != null)
+        {
+            _cache.Add(uuid, json.Name);
+        }
+
         return json?.Name ?? "Unknown";
     }
 

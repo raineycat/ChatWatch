@@ -26,15 +26,26 @@ public class DashLogModel : PageModel
 
     public List<EventLogEntry> Entries { get; set; } = new();
 
+    [FromQuery]
+    public DateOnly SelectedDay { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+
     public async Task OnGetAsync()
     {
-        var chatMessages = await _context.ChatMessage.Include(m => m.Sender).ToListAsync();
+        var selectedDT = SelectedDay.ToDateTime(TimeOnly.MinValue);
+        var chatMessages = await _context.ChatMessage
+            .Where(m => m.Timestamp.Date == selectedDT)
+            .Include(m => m.Sender)
+            .ToListAsync();
         Entries.AddRange(chatMessages.Select(m => new EventLogEntry(m)));
 
-        var privateMessages = await _context.PrivateMessage.Include(m => m.Sender).Include(m => m.Recipient).ToListAsync();
+        var privateMessages = await _context.PrivateMessage
+            .Where(m => m.Timestamp.Date == selectedDT)
+            .Include(m => m.Sender)
+            .Include(m => m.Recipient)
+            .ToListAsync();
         Entries.AddRange(privateMessages.Select(m => new EventLogEntry(m)));
 
-        Entries = Entries.OrderByDescending(e => e.Data.Timestamp).Take(150).ToList();
+        Entries = Entries.OrderByDescending(e => e.Data.Timestamp).ToList();
     }
 
     public string FormatName(Player p) {

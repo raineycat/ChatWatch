@@ -8,6 +8,57 @@
 
 <h1>Message log</h1>
 
+<div>
+    <label for="pick-evlog-date">Viewing chat on: </label>
+    <input id="pick-evlog-date" type="date" />
+
+    @* <label for="evlog-search">Search...</label> *@
+    <input type="text" autofill="true" id="evlog-search" placeholder="Search chat..." />
+</div>
+
+<script>
+    const datePicker = $("#pick-evlog-date")
+    datePicker.val($.query.get("SelectedDay"))
+    datePicker.on("change", () => {
+        var date = datePicker.val()
+        console.log(date)
+        window.location.search = $.query.set("SelectedDay", date)
+    })
+
+    function doSearchFor(text) {
+        var terms = text.toLowerCase().trim().split(" ")
+
+        console.log(terms)
+        $("#evlog-table-body").children("tr").each((i, row) => {
+            var match = false
+            var compared = ""
+            $(row).children("td[data-searchable=yes]").each((j, td) => {
+                compared += $(td).text().toLowerCase()
+            })
+
+            if(terms.every(st => {
+                return compared.indexOf(st) > -1
+            })) {
+                $(row).show()
+            } else {
+                $(row).hide()
+            }
+        })
+    }
+
+    const searchBox = $("#evlog-search")
+    var lastSearch = localStorage.getItem("CWLastSearch")
+    if(lastSearch !== null) {
+        searchBox.val(lastSearch)
+        doSearchFor(lastSearch)
+    }
+
+    searchBox.on("keyup", () => {
+        localStorage.setItem("CWLastSearch", searchBox.val())
+        doSearchFor(searchBox.val())
+    })
+</script>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -17,7 +68,7 @@
             <th>Message</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="evlog-table-body">
 @foreach (var item in Model.Entries) {
         <tr class="@(
             item.Type == EventLogEntry.EntryType.PrivateMessage ?
@@ -27,7 +78,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Data.Timestamp)
             </td>
-            <td>
+            <td data-searchable="yes">
                 <a asp-area="Admin" asp-page="ManagePlayer" asp-route-id="@item.Data.Sender.ID">@Model.FormatName(item.Data.Sender)</a>
                 @if(item.Type == EventLogEntry.EntryType.PrivateMessage) {
                     <span>&rarr;</span>
@@ -35,10 +86,10 @@
                     <a asp-area="Admin" asp-page="ManagePlayer" asp-route-id="@pm.Recipient.ID">@Model.FormatName(pm.Recipient)</a>;
                 }
             </td>
-            <td>
+            <td data-searchable="yes">
                 @Html.DisplayFor(modelItem => item.Data.Server)
             </td>
-            <td>
+            <td data-searchable="yes">
                 @Html.DisplayFor(modelItem => item.Data.Content)
             </td>
         </tr>

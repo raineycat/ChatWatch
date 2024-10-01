@@ -44,9 +44,9 @@ public class DataApiController : ControllerBase
     }
 
     [HttpGet("MostActivePlayers")]
-    public async Task<Dictionary<string, MessageCountData>> GetMostActivePlayers()
+    public async Task<Dictionary<string, int>> GetMostActivePlayers()
     {
-        var dict = new Dictionary<string, MessageCountData>();
+        var dict = new Dictionary<string, int>();
         var today = DateTime.Now.Date;
 
         foreach(var player in await _dbc.Player.ToListAsync())
@@ -61,7 +61,7 @@ public class DataApiController : ControllerBase
                 .Where(m => m.Sender == player)
                 .CountAsync();
 
-            dict.Add(_username.GetUsername(player), new MessageCountData(numChats, numPrivs));
+            dict.Add(_username.GetUsername(player), numChats + numPrivs);
         }
 
         return dict;

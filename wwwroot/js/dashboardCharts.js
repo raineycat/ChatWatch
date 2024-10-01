@@ -80,19 +80,9 @@ $.getJSON("/DataApi/MostActivePlayers", mapData => {
                 datasets: [
                     {
                         label: "Total messages",
-                        data: Object.values(mapData).map(v => v.numChatMessages + v.numPrivateMessages),
+                        data: Object.values(mapData),
                         hoverOffset: 5
                     }
-                    // {
-                    //     label: "Chat",
-                    //     data: Object.values(mapData).map(v => v.numChatMessages),
-                    //     hoverOffset: 5
-                    // },
-                    // {
-                    //     label: "Private",
-                    //     data: Object.values(mapData).map(v => v.numPrivateMessages),
-                    //     hoverOffset: 5
-                    // }
                 ]
             },
             options: {
@@ -100,6 +90,9 @@ $.getJSON("/DataApi/MostActivePlayers", mapData => {
                     title: {
                         display: true,
                         text: "Most active players this month"
+                    },
+                    legend: {
+                        display: false
                     }
                 }
             }

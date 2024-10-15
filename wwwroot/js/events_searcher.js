@@ -2,7 +2,6 @@
 datePicker.val($.query.get("SelectedDay"))
 datePicker.on("change", () => {
     var date = datePicker.val()
-    console.log(date)
     window.location.search = $.query.set("SelectedDay", date)
 })
 

@@ -6,6 +6,7 @@ using ChatWatchApp.Services.Impl;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ChatWatchApp;
+using ChatWatchApp.Realtime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ builder.Services.AddSingleton<IServerSettings, ConfigServerSettings>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -64,5 +66,6 @@ using(var scope = app.Services.CreateScope())
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<RealTimeChatHub>("/rtchat");
 
 app.Run();

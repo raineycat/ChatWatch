@@ -22,7 +22,7 @@ conn.on("RTChatMsg", async (imsg) => {
     }
     
     const nameSpan = document.createElement("span")
-    const formatTime = new Date(imsg.timestamp).toLocaleString().replace(",", "")
+    const formatTime = new Date(imsg.timestamp).toLocaleString()
     const senderName = await fetch("/Helper/UsernameFromUUID?uuid=" + imsg.sender.id)
     const playerLink = document.createElement("a")
     playerLink.href = "/Admin/ManagePlayer?id=" + imsg.sender.id

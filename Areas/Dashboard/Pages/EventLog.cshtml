@@ -18,22 +18,22 @@
 
 <table class="table table-striped">
     <thead>
-        <tr>
-            <th>Date/Time</th>
-            <th>Player Name (&rarr; Recipient Name)</th>
-            <th>Server of Origin</th>
-            <th>Message</th>
-        </tr>
+    <tr>
+        <th>Date/Time</th>
+        <th>Player Name (&rarr; Recipient Name)</th>
+        <th>Server of Origin</th>
+        <th>Message</th>
+    </tr>
     </thead>
     <tbody id="evlog-table-body">
-@foreach (var item in Model.Entries) {
+    @foreach (var item in Model.Entries) {
         <tr class="@(
-            item.Type == EventLogEntry.EntryType.PrivateMessage ?
-                "bg-warning bg-gradient " :
-                ""
-        )">
-            <td>
-                @Html.DisplayFor(modelItem => item.Data.Timestamp)
+                   item.Type == EventLogEntry.EntryType.PrivateMessage ?
+                       "bg-warning bg-gradient " :
+                       ""
+                   )">
+            <td class="cw-format-utc-time">
+                @(new DateTimeOffset(item.Data.Timestamp, TimeSpan.Zero).ToUnixTimeMilliseconds())
             </td>
             <td data-searchable="yes">
                 <a asp-area="Admin" asp-page="ManagePlayer" asp-route-id="@item.Data.Sender.ID">@Model.FormatName(item.Data.Sender)</a>
@@ -49,17 +49,26 @@
             <td data-searchable="yes">
                 @Html.DisplayFor(modelItem => item.Data.Content)
             </td>
-                @if(item.Type == EventLogEntry.EntryType.PrivateMessage)
-                {
-                    @* This lets you just search the work 'private' and see all PMs *@
-                    <td style="display: none;" data-searchable="yes">
-                        private
-                    </td>
-                }
-            </tr>
-}
+            @if(item.Type == EventLogEntry.EntryType.PrivateMessage)
+            {
+                @* This lets you just search the work 'private' and see all PMs *@
+                <td style="display: none;" data-searchable="yes">
+                    private
+                </td>
+            }
+        </tr>
+    }
     </tbody>
 </table>
+
+<script>
+    const timestampFormats = $(".cw-format-utc-time")
+    timestampFormats.each(ind => {
+        const el = timestampFormats[ind]
+        const d = new Date(parseInt(el.innerText))
+        el.innerText = d.toLocaleString()
+    })
+</script>
 
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
 <script src="~/js/events_searcher.js" asp-append-version="true"></script>

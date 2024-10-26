@@ -66,4 +66,41 @@ public class DataApiController : ControllerBase
 
         return dict;
     }
+
+    private int GetOccurenceOfDay(DayOfWeek dow)
+    {
+        var today = DateTime.Today.Date;
+        var count = 0;
+
+        for(var i = 0; i < DateTime.DaysInMonth(today.Year, today.Month); i++)
+        {
+            if(today.DayOfWeek == dow)
+            {
+                count++;
+            }
+            today = today.AddDays(1);
+        }
+
+        return count;
+    }
+
+    [HttpGet("AvgActiveDaysChat")]
+    public async Task<List<int>> GetAverageChatsPerDay()
+    {
+        var today = DateTime.Now.Date;
+        var avgs = new List<int>();
+
+        // 0 = sunday, etc :(
+        for(var i = 0; i < 7; i++)
+        {
+            var daySum = await _dbc.ChatMessage
+                .Where(m => m.Timestamp.Year == today.Year && m.Timestamp.Month == today.Month)
+                .Where(m => m.Timestamp.DayOfWeek == (DayOfWeek)i).CountAsync();
+
+            daySum /= GetOccurenceOfDay((DayOfWeek)i);
+            avgs.Add(daySum);
+        }
+
+        return avgs;
+    }
 }

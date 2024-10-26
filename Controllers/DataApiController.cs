@@ -103,4 +103,24 @@ public class DataApiController : ControllerBase
 
         return avgs;
     }
+
+    [HttpGet("AvgActiveHours")]
+    public async Task<List<int>> GetAverageActiveHours()
+    {
+        var today = DateTime.Now.Date;
+        var avgs = new List<int>();
+        var daysThisMonth = DateTime.DaysInMonth(today.Year, today.Month);
+
+        for(var hour = 0; hour < 24; hour++)
+        {
+            var count = await _dbc.ChatMessage
+                .Where(m => m.Timestamp.Year == today.Year && m.Timestamp.Month == today.Month)
+                .Where(m => m.Timestamp.Hour == hour)
+                .CountAsync();
+
+            avgs.Add(count / daysThisMonth);
+        }
+
+        return avgs;
+    }
 }

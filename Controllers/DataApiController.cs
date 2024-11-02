@@ -85,9 +85,14 @@ public class DataApiController : ControllerBase
     }
 
     [HttpGet("AvgActiveDaysChat")]
-    public async Task<List<int>> GetAverageChatsPerDay()
+    public async Task<List<int>> GetAverageChatsPerDay([FromQuery] DateOnly? BasedOnMonth)
     {
-        var today = DateTime.Now.Date;
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        if (BasedOnMonth.HasValue)
+        {
+            today = BasedOnMonth.Value;
+        }
+        
         var avgs = new List<int>();
 
         // 0 = sunday, etc :(
@@ -105,9 +110,14 @@ public class DataApiController : ControllerBase
     }
 
     [HttpGet("AvgActiveHours")]
-    public async Task<List<int>> GetAverageActiveHours()
+    public async Task<List<int>> GetAverageActiveHours([FromQuery] DateOnly? BasedOnMonth)
     {
-        var today = DateTime.Now.Date;
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        if (BasedOnMonth.HasValue)
+        {
+            today = BasedOnMonth.Value;
+        }
+        
         var avgs = new List<int>();
         var daysThisMonth = DateTime.DaysInMonth(today.Year, today.Month);
 

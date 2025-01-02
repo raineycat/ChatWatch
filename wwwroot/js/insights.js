@@ -27,7 +27,7 @@ function refreshInsightsCharts(monthBase)
             {
                 type: "bar",
                 data: {
-                    labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                    labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
                     datasets: [
                         {
                             label: "Chat",

@@ -27,12 +27,7 @@ function refreshInsightsCharts(monthBase)
             {
                 type: "bar",
                 data: {
-                    labels: [6, 5, 4, 3, 2, 1, 0].map(i => {
-                        let date = new Date()
-                        let dateOffset = (24*60*60*1000) * i
-                        date.setTime(date.getTime() - dateOffset)
-                        return date.toLocaleDateString("en-gb", { weekday: "long" })
-                    }),
+                    labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
                     datasets: [
                         {
                             label: "Chat",

@@ -51,15 +51,21 @@ public class MojangUsernameService : IUsernameService
         // https://wiki.vg/Mojang_API#UUID_to_Profile_and_Skin.2FCape
 
         var endpoint = $"/session/minecraft/profile/{uuid}";
-        var resp = await _client.GetAsync(endpoint);
-        var json = await resp.Content.ReadFromJsonAsync<MojangProfileResponse>();
+        MojangProfileResponse? json = null;
+
+        try {
+            var resp = await _client.GetAsync(endpoint);
+            json = await resp.Content.ReadFromJsonAsync<MojangProfileResponse>();
+        } catch(Exception e) {
+            _logger.LogError("Failed to retrieve username for '{UUID}': {Exception}", uuid, e);
+        }
 
         if (json?.Name != null)
         {
             _cache.Add(uuid, json.Name);
         }
 
-        return json?.Name ?? "Unknown";
+        return json?.Name ?? "[Unknown]";
     }
 
     private class MojangProfileResponse

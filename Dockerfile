@@ -18,7 +18,7 @@ COPY --from=build /app /app
 COPY ./pterodactyl.sh /entrypoint.sh
 
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENTRYPOINT ["/usr/bin/sh", "/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/bash", "/entrypoint.sh"]
 
-LABEL org.opencontainers.image.source="https://github.com/sbcomputertech/ChatWatch" 
+LABEL org.opencontainers.image.source="https://github.com/raineycat/ChatWatch" 
 LABEL org.opencontainers.image.description="Minecraft chat monitoring server"

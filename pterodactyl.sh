@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/bash
 
 # Entrypoint script for running under a pterodactyl container
 # https://pterodactyl.io/community/config/eggs/creating_a_custom_image.html

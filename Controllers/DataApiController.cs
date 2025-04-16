@@ -61,7 +61,10 @@ public class DataApiController : ControllerBase
                 .Where(m => m.Sender == player)
                 .CountAsync();
 
-            dict.Add(_username.GetUsername(player), numChats + numPrivs);
+            var name = _username.GetUsername(player);
+            if(name != "") {
+                dict.Add(name, numChats + numPrivs);
+            }
         }
 
         return dict;

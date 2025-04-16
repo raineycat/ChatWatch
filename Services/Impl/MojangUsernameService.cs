@@ -55,9 +55,11 @@ public class MojangUsernameService : IUsernameService
 
         try {
             var resp = await _client.GetAsync(endpoint);
+            resp.EnsureSuccessStatusCode();
             json = await resp.Content.ReadFromJsonAsync<MojangProfileResponse>();
         } catch(Exception e) {
             _logger.LogError("Failed to retrieve username for '{UUID}': {Exception}", uuid, e);
+            return "";
         }
 
         if (json?.Name != null)
@@ -65,7 +67,7 @@ public class MojangUsernameService : IUsernameService
             _cache.Add(uuid, json.Name);
         }
 
-        return json?.Name ?? "[Unknown]";
+        return json?.Name ?? "";
     }
 
     private class MojangProfileResponse
